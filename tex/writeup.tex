@@ -1,0 +1,95 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+
+% Palatino font
+\usepackage{newpxtext}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.multipart,arrows.meta, calc}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Neural Networks from Scratch and Exploring Compression}
+\author{Robert Davidson}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Feed Forward Neural Networks}
+
+\subsection{Motivation}
+Given some unknown function, $f^\ast: X \to Y$, we aim to find a good
+approximation, $f: X \to Y$, by learning a set of parameters, $\theta$,
+using a dataset of $N$ samples:
+$$
+\mathcal{D} = \{(\mathbf{x}_i, \mathbf{y}_i = f^\ast(\mathbf{x}_i))\}_{i=1}^N
+$$
+
+\noindent We measure how well our approximation performs by measuring the loss,
+$L(\mathbf{y}_i, \hat{\mathbf{y}}_i)$. We then optimize the parameters, $\theta$, by
+minimizing the loss over the dataset.\cite{goodfellow2016deep}\cite{smets2024mathematics}
+
+\subsection{Neurons and Layers}
+
+\noindent
+A neural network is a function, $f : \mathbb{R}^n \to \mathbb{R}^m$ takes an input vector $\mathbf{x} \in \mathbb{R}^n$ and produces an output vector $\hat{\mathbf{y}} \in \mathbb{R}^m$ by passing the input through a series of layers of neurons.  \\[1ex]
+\noindent The neuron is the basic building block of a neural network. When we pass a vector to the network, the neuron computes a weighted sum of the inputs and adds a bias term,
+$$a = w_1 x_1 + w_2 x_2 + \ldots + w_n x_n + b = \mathbf{w}^T \mathbf{x} + b$$
+This is commonly called the preactivation value. We then apply a non linear activation function, $\sigma$ to obtain the output of the neuron:
+$$h = \sigma(a)$$
+We commonly taken $\sigma = \text{ReLU}$, where $\text{ReLU}(x) = \max(0, x)$. \\
+We say a layer is  a series of neurons that take the same input, apply their own unique weights and biases, and product a vector of outputs. For example, the first hidden layer of a neural network can be written:
+$$\mathbf{h}^{(1)} = \begin{bmatrix}
+    h^{(1)}_1 \\
+    h^{(1)}_2 \\
+    \vdots \\
+    h^{(1)}_m 
+\end{bmatrix}
+= 
+\begin{bmatrix}
+    \sigma(w^{(1)}_{1,1} x_1 + w^{(1)}_{1,2} x_2 + \ldots + w^{(1)}_{1,n} x_n + b^{(1)}_1) \\
+    \sigma(w^{(1)}_{2,1} x_1 + w^{(1)}_{2,2} x_2 + \ldots + w^{(1)}_{2,n} x_n + b^{(1)}_2) \\
+    \vdots \\
+    \sigma(w^{(1)}_{m,1} x_1 + w^{(1)}_{m,2} x_2 + \ldots + w^{(1)}_{m,n} x_n + b^{(1)}_m)
+\end{bmatrix}
+= 
+ \sigma \left(
+\begin{bmatrix}
+    (w^{(1)})^T\\
+    (w^{(1)})^T\\
+    \vdots \\
+    (w^{(1)})^T
+\end{bmatrix}
+  \right)
+  = 
+\sigma(W^{(1)}\mathbf{x} + \mathbf{b})
+$$
+The second hidden layer takes this vector as input and produces another vector of outputs:
+$$\mathbf{h}^{(2)} = \sigma(W^{(2)}\mathbf{h}^{(1)} + \mathbf{b}^{(2)})$$
+In general, the $l$-th layer of a neural network can be written as:
+$$\mathbf{h}^{(l)} = \sigma(W^{(l)}\mathbf{h}^{(l-1)} + \mathbf{b}^{(l)})$$
+\subsection{Questions}
+We might ask ourselves, why do we need to use a non linear activation function? How do we know our choice of weights is correct?
+
+\section{MNIST and Our Neural Network}
+Mnist is a dataset of $28 \times 28$ pixel images of handwritten digits. Each image is labeled with the digits it represents from $0$ to $9$. Let $\mathcal{D}$ denote the dataset, then:
+$$\mathcal{D} = \{(x_i, y_i)\}_{i=1}^{60,000}$$
+where $x_i \in \mathbb{R}^{28 \times 28}$ and $y_i \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}$. 
+
+\noindent We use one hidden layer, with $256$ neurons, and a ReLU activation function. Our network can be written as:
+$$\hat{y} = f(x) = \text{softmax}(W^{(2)}(\text{ReLU}(W^{(1)}x + b^{(1)}) + b^{(2)}))$$
+with:
+$$W_1 \in \mathbb{R}^{256 \times 784}, b_1 \in \mathbb{R}^{256}, W_2 \in \mathbb{R}^{10 \times 256}, b_2 \in \mathbb{R}^{10}$$
+We initialize the weights and biases following Kaiming He's initialization scheme.
+
+\pagebreak
+\nocite{*}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
