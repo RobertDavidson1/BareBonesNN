@@ -14,9 +14,9 @@ BareBonesNN/
 │       ├── data.py                # Dataset loading and preprocessing helpers
 │       ├── model.py               # NumPy multilayer perceptron and backpropagation
 │       ├── train.py               # Training loop, validation, and weight saving
-│       ├── utils.py                # Evaluation and utility functions
+│       ├── utils.py               # Evaluation and utility functions
 │       ├── mlp_weights.npz        # Saved model weights
-│       └── Notebooks/              # Experiments, visualizations, conversion, and pruning
+│       └── Notebooks/             # Experiments, visualizations, conversion, and pruning
 ├── tex/
 │   ├── writeup.tex                # LaTeX source for the project write-up
 │   ├── references.bib             # Bibliography for the write-up
