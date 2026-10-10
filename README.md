@@ -2,6 +2,31 @@
 
 A NumPy neural network built from scratch with manual backpropagation, gradient descent, and weight pruning experiments.
 
+Read the project write-up [here](tex/writeup.pdf) (WIP).
+
+## Contents
+
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
+
+## Getting started
+
+```bash
+# 1. Install uv (if you do not already have it)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 2. Install the project dependencies
+uv sync
+
+# 3. Activate the virtual environment
+source .venv/bin/activate
+
+# 4. Train the NumPy MLP on MNIST
+#    The first run downloads the dataset through scikit-learn.
+python src/barebonesnn/train.py
+```
+
+
 ## Project structure
 
 ```text
